@@ -24,9 +24,13 @@ class Settings(BaseSettings):
     sentry_dsn: Optional[str] = None
     log_level: str = "INFO"
     environment: str = "development"
+    docs_enabled: bool = True
     
     # CORS
-    allowed_origins: List[str] = ["http://localhost:3000", "http://localhost:8081"]
+    allowed_origins: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:8081",
+    ]
     
     # Rate Limiting
     rate_limit_enabled: bool = True

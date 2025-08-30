@@ -1,8 +1,11 @@
 # ClassBuddy 2.0 - Production Mobile Launch
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Jani-shiv/clasbuddy)
+
 ## 🚀 Project Overview
 
 ClassBuddy 2.0 is a comprehensive college assistant platform featuring:
+
 - Modern FastAPI backend with PostgreSQL/MySQL support
 - React Native mobile app for iOS and Android
 - AI-powered features with OpenAI and Anthropic integration
@@ -12,8 +15,19 @@ ClassBuddy 2.0 is a comprehensive college assistant platform featuring:
 
 ## 📋 Architecture Overview
 
+## 🌐 Live Demo
+
+When deployed, the API will be available at:
+
+- Base URL: https://&lt;your-app&gt;.onrender.com
+- Docs: https://&lt;your-app&gt;.onrender.com/docs
+- Health: https://&lt;your-app&gt;.onrender.com/health
+
+To deploy quickly, click the button above or use Docker/Compose.
+
 ### Backend Architecture
-```
+
+```text
 FastAPI (Python 3.11+)
 ├── Authentication (JWT + OAuth2)
 ├── Database (PostgreSQL/MySQL + SQLAlchemy)
@@ -24,7 +38,8 @@ FastAPI (Python 3.11+)
 ```
 
 ### Mobile Architecture
-```
+
+```text
 React Native 0.72+
 ├── State Management (Redux Toolkit)
 ├── Navigation (React Navigation v6)
@@ -40,6 +55,7 @@ React Native 0.72+
 ### Backend Setup
 
 1. **Clone and Setup Environment**
+   
    ```bash
    git clone https://github.com/jani-shiv/clasbuddy.git
    cd clasbuddy
@@ -49,12 +65,14 @@ React Native 0.72+
    ```
 
 2. **Environment Configuration**
+   
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 3. **Database Setup**
+   
    ```bash
    # For PostgreSQL
    createdb classbuddy
@@ -67,6 +85,7 @@ React Native 0.72+
    ```
 
 4. **Run Development Server**
+   
    ```bash
    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```
@@ -80,12 +99,14 @@ React Native 0.72+
    - Xcode (for iOS, macOS only)
 
 2. **Install Dependencies**
+   
    ```bash
    cd mobile
    npm install
    ```
 
 3. **iOS Setup (macOS only)**
+   
    ```bash
    cd ios
    pod install
@@ -94,6 +115,7 @@ React Native 0.72+
    ```
 
 4. **Android Setup**
+   
    ```bash
    npx react-native run-android
    ```
@@ -101,11 +123,13 @@ React Native 0.72+
 ### Docker Setup
 
 1. **Development with Docker Compose**
+   
    ```bash
    docker-compose up -d
    ```
 
 2. **Production Docker Build**
+   
    ```bash
    docker build -t classbuddy:latest .
    docker run -p 8000:8000 classbuddy:latest
@@ -127,6 +151,7 @@ React Native 0.72+
 ## 🔒 Security Features
 
 ### Authentication & Authorization
+
 - JWT-based authentication
 - Secure password hashing (bcrypt)
 - Role-based access control
@@ -134,6 +159,7 @@ React Native 0.72+
 - Token refresh mechanism
 
 ### API Security
+
 - CORS configuration
 - Rate limiting
 - Input validation
@@ -141,6 +167,7 @@ React Native 0.72+
 - XSS protection headers
 
 ### Mobile Security
+
 - Secure token storage (Keychain/Keystore)
 - Biometric authentication support
 - Certificate pinning
@@ -149,18 +176,21 @@ React Native 0.72+
 ## 📊 Monitoring & Observability
 
 ### Metrics & Monitoring
+
 - Prometheus metrics collection
 - Custom business metrics
 - Performance monitoring
 - Resource usage tracking
 
 ### Logging
+
 - Structured logging (JSON format)
 - Log levels configuration
 - Request/response logging
 - Error tracking with context
 
 ### Error Tracking
+
 - Sentry integration
 - Automatic error capture
 - Performance monitoring
