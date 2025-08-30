@@ -1,122 +1,278 @@
-pip install -r requirements.txt
+# ClassBuddy 2.0 - Production Mobile Launch
 
-# ClassBuddy: All-in-One College Assistant
+## 🚀 Project Overview
 
-ClassBuddy is a modular, extensible college assistant platform built with FastAPI, SQLAlchemy, and SQLite. It provides a suite of tools for students to manage events, academics, campus navigation, community engagement, and AI-powered Q&A, all in one place.
+ClassBuddy 2.0 is a comprehensive college assistant platform featuring:
+- Modern FastAPI backend with PostgreSQL/MySQL support
+- React Native mobile app for iOS and Android
+- AI-powered features with OpenAI and Anthropic integration
+- Secure authentication and user management
+- Real-time features and offline support
+- Comprehensive observability and monitoring
 
----
+## 📋 Architecture Overview
 
-## 🚀 Features
-
-- **Events**: Full CRUD for campus events (create, view, update, delete)
-- **Campus Maps**: Search for buildings by name or code
-- **Academics**: Track courses, assignments, and attendance
-- **Community**: Discover clubs and simulate chat
-- **AI Assistant**: Rule-based/NLP Q&A (with Refact.ai integration ready for advanced features)
-
----
-
-## 🗂️ Project Structure
-
+### Backend Architecture
 ```
-classbuddy/
-│   main.py                # FastAPI entry point
-│   requirements.txt       # Python dependencies
-│   README.md              # Project documentation
-│
-├── api/                   # API routers for each feature
-├── db/                    # Database setup
-├── models/                # SQLAlchemy models
-├── services/              # (Expandable) Business logic
-├── utils/                 # Helpers (NLP, Refact.ai, etc.)
+FastAPI (Python 3.11+)
+├── Authentication (JWT + OAuth2)
+├── Database (PostgreSQL/MySQL + SQLAlchemy)
+├── AI Services (OpenAI, Anthropic, Refact.ai)
+├── Caching (Redis)
+├── Monitoring (Prometheus, Sentry)
+└── API Documentation (OpenAPI/Swagger)
 ```
 
----
+### Mobile Architecture
+```
+React Native 0.72+
+├── State Management (Redux Toolkit)
+├── Navigation (React Navigation v6)
+├── UI Components (React Native Paper)
+├── Authentication (Keychain/Keystore)
+├── Offline Support (SQLite + Redux Persist)
+├── Push Notifications (Firebase)
+└── Analytics (Firebase Analytics)
+```
 
-## ⚙️ Setup & Installation
+## 🛠 Setup Instructions
 
-1. **Clone the repository**
+### Backend Setup
+
+1. **Clone and Setup Environment**
    ```bash
-   git clone https://github.com/jani-shiv/ClassBuddy.git
-   cd ClassBuddy/classbuddy
-   ```
-
-2. **Create a virtual environment (optional but recommended)**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
+   git clone https://github.com/jani-shiv/clasbuddy.git
+   cd clasbuddy
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-4. **Initialize the database**
+2. **Environment Configuration**
    ```bash
-   python -c "from db.database import Base, engine; Base.metadata.create_all(bind=engine)"
+   cp .env.example .env
+   # Edit .env with your configuration
    ```
 
-5. **Run the development server**
+3. **Database Setup**
    ```bash
-   uvicorn main:app --reload
+   # For PostgreSQL
+   createdb classbuddy
+   
+   # Run migrations
+   alembic upgrade head
+   
+   # Or create tables directly
+   python -c "from db.database import create_tables; create_tables()"
    ```
 
-6. **Open your browser**
-   - API root: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-   - Interactive docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+4. **Run Development Server**
+   ```bash
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+### Mobile Setup
+
+1. **Prerequisites**
+   - Node.js 18+
+   - React Native CLI
+   - Android Studio (for Android)
+   - Xcode (for iOS, macOS only)
+
+2. **Install Dependencies**
+   ```bash
+   cd mobile
+   npm install
+   ```
+
+3. **iOS Setup (macOS only)**
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   npx react-native run-ios
+   ```
+
+4. **Android Setup**
+   ```bash
+   npx react-native run-android
+   ```
+
+### Docker Setup
+
+1. **Development with Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Production Docker Build**
+   ```bash
+   docker build -t classbuddy:latest .
+   docker run -p 8000:8000 classbuddy:latest
+   ```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `DATABASE_URL` | Database connection string | Yes | `sqlite:///./classbuddy.db` |
+| `SECRET_KEY` | JWT secret key | Yes | - |
+| `OPENAI_API_KEY` | OpenAI API key | No | - |
+| `ANTHROPIC_API_KEY` | Anthropic API key | No | - |
+| `REDIS_URL` | Redis connection string | No | `redis://localhost:6379/0` |
+| `SENTRY_DSN` | Sentry DSN for error tracking | No | - |
+
+## 🔒 Security Features
+
+### Authentication & Authorization
+- JWT-based authentication
+- Secure password hashing (bcrypt)
+- Role-based access control
+- Session management
+- Token refresh mechanism
+
+### API Security
+- CORS configuration
+- Rate limiting
+- Input validation
+- SQL injection protection
+- XSS protection headers
+
+### Mobile Security
+- Secure token storage (Keychain/Keystore)
+- Biometric authentication support
+- Certificate pinning
+- API request signing
+
+## 📊 Monitoring & Observability
+
+### Metrics & Monitoring
+- Prometheus metrics collection
+- Custom business metrics
+- Performance monitoring
+- Resource usage tracking
+
+### Logging
+- Structured logging (JSON format)
+- Log levels configuration
+- Request/response logging
+- Error tracking with context
+
+### Error Tracking
+- Sentry integration
+- Automatic error capture
+- Performance monitoring
+- Release tracking
+
+## 🚀 Deployment
+
+### Cloud Deployment Options
+
+#### AWS Deployment
+1. **ECS with Fargate**
+   ```bash
+   # Build and push to ECR
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin YOUR_ECR_URI
+   docker build -t classbuddy .
+   docker tag classbuddy:latest YOUR_ECR_URI/classbuddy:latest
+   docker push YOUR_ECR_URI/classbuddy:latest
+   ```
+
+#### Google Cloud Deployment
+1. **Cloud Run**
+   ```bash
+   gcloud builds submit --tag gcr.io/PROJECT_ID/classbuddy
+   gcloud run deploy --image gcr.io/PROJECT_ID/classbuddy --platform managed
+   ```
+
+#### Azure Deployment
+1. **Container Instances**
+   ```bash
+   az acr build --registry YOUR_REGISTRY --image classbuddy .
+   az container create --resource-group YOUR_RG --name classbuddy --image YOUR_REGISTRY.azurecr.io/classbuddy
+   ```
+
+## 📱 Mobile App Store Submission
+
+### Android (Google Play Store)
+1. **Prepare Release Build**
+   ```bash
+   cd mobile/android
+   ./gradlew assembleRelease
+   ```
+
+2. **Generate Signed APK**
+   - Create keystore file
+   - Configure signing in `android/app/build.gradle`
+   - Build signed APK
+
+3. **Play Store Submission**
+   - Create Play Console account
+   - Upload APK/AAB
+   - Complete store listing
+   - Submit for review
+
+### iOS (App Store)
+1. **Prepare Release Build**
+   ```bash
+   cd mobile
+   npx react-native run-ios --configuration Release
+   ```
+
+2. **Archive and Upload**
+   - Use Xcode to archive
+   - Upload to App Store Connect
+   - Complete app metadata
+
+## � Development Tools
+
+### Code Quality
+- **Black**: Python code formatting
+- **isort**: Import sorting
+- **ESLint**: JavaScript/TypeScript linting
+- **Prettier**: Code formatting
+- **Pre-commit hooks**: Automated quality checks
+
+### Testing
+- **Backend**: pytest, pytest-asyncio
+- **Frontend**: Jest, React Native Testing Library
+- **Integration**: API testing with httpx
+- **E2E**: Detox (planned)
+
+## 📈 Performance Optimization
+
+### Backend Performance
+- Database query optimization
+- Connection pooling
+- Response caching
+- Async request handling
+- Background task processing
+
+### Mobile Performance
+- Image optimization
+- Code splitting
+- Lazy loading
+- Offline data sync
+- Memory management
+
+## � Support & Maintenance
+
+### Post-Launch Monitoring
+- Monitor application metrics
+- Track user feedback
+- Analyze crash reports
+- Monitor API performance
+- Review security logs
+
+### Update Strategy
+- Regular dependency updates
+- Security patch deployment
+- Feature releases (monthly)
+- Emergency hotfixes
+- Database migrations
 
 ---
 
-## 🧩 API Overview
-
-### Events
-- `GET /events/` — List all events
-- `POST /events/` — Create a new event
-- `GET /events/{event_id}` — Get event details
-- `PUT /events/{event_id}` — Update event
-- `DELETE /events/{event_id}` — Delete event
-
-### Campus Map
-- `GET /campus-map/search?q=...` — Search buildings by name or code
-
-### Academics
-- `GET /academics/courses` — List courses
-- `GET /academics/assignments` — List assignments
-- `GET /academics/attendance` — List attendance records
-
-### Community
-- `GET /community/clubs` — List clubs
-- `GET /community/chat` — Get chat messages
-- `POST /community/chat` — Post a chat message
-
-### AI Assistant
-- `POST /assistant/ask` — Ask a question (rule-based/NLP, ready for Refact.ai)
-
----
-
-## 🤖 Refact.ai Integration
-
-ClassBuddy is ready for advanced AI features using [Refact.ai](https://refact.ai/). See `utils/refact_integration.py` for a starting point. You can expand the AI assistant to use Refact.ai for more powerful Q&A, summarization, or other LLM-powered features.
-
----
-
-## 🛠️ Contributing
-
-1. Fork the repo and create your feature branch (`git checkout -b feature/YourFeature`)
-2. Commit your changes (`git commit -am 'Add new feature'`)
-3. Push to the branch (`git push origin feature/YourFeature`)
-4. Open a Pull Request
-
----
-
-## 👤 Author
-
-- GitHub: [jani_shiv](https://github.com/jani-shiv)
-- Project maintained by jani_shiv
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+**Built with ❤️ by the ClassBuddy Team**
