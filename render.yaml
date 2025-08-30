@@ -1,7 +1,7 @@
 services:
   - type: web
     name: clasbuddy-app
-    runtime: python3
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: python main.py
     plan: free
