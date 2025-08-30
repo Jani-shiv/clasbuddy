@@ -6,9 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
-import sentry_sdk
-from sentry_sdk.integrations.fastapi import FastApiIntegration
-from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.fastapi import FastApiIntegration
+# from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from api import events, campus_map, academics, community, assistant, auth
@@ -22,17 +22,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize Sentry for error tracking
-if settings.sentry_dsn:
-    sentry_sdk.init(
-        dsn=settings.sentry_dsn,
-        integrations=[
-            FastApiIntegration(auto_enabling_integrations=False),
-            SqlalchemyIntegration(),
-        ],
-        traces_sample_rate=0.1,
-        environment=settings.environment,
-    )
+# Initialize Sentry for error tracking (disabled for local development)
+# if settings.sentry_dsn:
+#     sentry_sdk.init(
+#         dsn=settings.sentry_dsn,
+#         integrations=[
+#             FastApiIntegration(auto_enabling_integrations=False),
+#             SqlalchemyIntegration(),
+#         ],
+#         traces_sample_rate=0.1,
+#         environment=settings.environment,
+#     )
 
 
 @asynccontextmanager
