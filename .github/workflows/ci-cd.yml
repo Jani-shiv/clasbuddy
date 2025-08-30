@@ -104,6 +104,9 @@ jobs:
   # Security Scanning
   security-scan:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
     steps:
     - uses: actions/checkout@v4
     
