@@ -1,0 +1,27 @@
+============================================
+   CLASSBUDDY DEPLOYMENT - SIMPLE STEPS
+============================================
+
+✅ CI/CD WORKFLOW FIXED (CodeQL v3 updated)
+
+👆 CLICK THIS LINK:
+https://render.com/deploy?repo=https://github.com/Jani-shiv/clasbuddy
+
+📋 COPY & PASTE THESE:
+SECRET_KEY=lAHyy8wVWCFYCbkRdk_39PLMBm14p2n6X-rut7CsMzw
+DOCS_ENABLED=true
+ENVIRONMENT=production
+LOG_LEVEL=INFO
+
+🔄 IN RENDER:
+1. Sign in with GitHub
+2. Paste variables above
+3. Add PostgreSQL database  
+4. Click "Create Web Service"
+
+⏰ WAIT 5 MINUTES
+
+🎉 YOUR APP LIVE AT:
+https://clasbuddy-app.onrender.com
+
+============================================
