@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from database import init_db, get_db
-from api import router as api_router
+from api_router import router as api_router
 from models import Student, Course, Assignment, Event
 import os
 
